@@ -1,0 +1,29 @@
+title: Lorem Ipsum Generator
+name: loremgenerator
+version: 1.0.1+1
+summary: Lorem Ipsum Generator
+description: Lorem Ipsum Generator
+contact: xrayadamo@gmail.com
+icon: snap/gui/app.rayadams.number2text.png
+confinement: strict
+base: core22
+grade: stable
+license: MIT
+source-code: https://github.com/rayadams/loremgenerator
+website: https://www.rayadams.app
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+    
+apps:
+  loremgenerator:
+    command: loremgenerator
+    extensions: [gnome]
+    plugs:
+      - network
+parts:
+  loremgenerator:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart
