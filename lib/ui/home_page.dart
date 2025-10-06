@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 NumberEditor(
-                  title: 'Words',
+                  title: 'Max Words',
                   value: _wordCount,
                   onChanged: (value) {
                     setState(() {
@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 const SizedBox(width: 16),
                 NumberEditor(
-                  title: 'Sentences',
+                  title: 'Max Sentences',
                   value: _sentenceCount,
                   onChanged: (value) {
                     setState(() {
@@ -127,25 +127,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   maxValue: 40,
                 ),
                 const SizedBox(width: 16),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      _startWithLorem = !_startWithLorem;
-                    });
-                    _preferencesService.saveStartWithLorem(_startWithLorem);
-                  },
-                  child: Text("Start with lorem", style: Theme.of(context).textTheme.titleSmall),
+                Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _startWithLorem = !_startWithLorem;
+                        });
+                        _preferencesService.saveStartWithLorem(_startWithLorem);
+                      },
+                      child: Text("Start with lorem", style: Theme.of(context).textTheme.titleSmall),
+                    ),
+                    YaruSwitch(
+                      value: _startWithLorem,
+                      onChanged: (value) {
+                        setState(() {
+                          _startWithLorem = value;
+                        });
+                        _preferencesService.saveStartWithLorem(value);
+                      },
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                YaruSwitch(
-                  value: _startWithLorem,
-                  onChanged: (value) {
-                    setState(() {
-                      _startWithLorem = value;
-                    });
-                    _preferencesService.saveStartWithLorem(value);
-                  },
-                ),
+
               ],
             ),
             const SizedBox(height: kYaruPagePadding),
