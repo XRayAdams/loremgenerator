@@ -5,7 +5,8 @@ PUBSPEC_FILE="pubspec.yaml"
 DEBIAN_YAML_FILE="debian/debian.yaml"
 DEBIAN_DESKTOP_FILE="debian/gui/app.rayadams.loremgenerator.desktop"
 SNAP_YAML_FILE="snap/snapcraft.yaml"
-SNAP_DESKTOP_FILE="snap/gui/app.rayadams.loremgenerator.desktop"
+SNAP_DESKTOP_FILE="snap/gui/loremgenerator.desktop"
+RPM_FILE="loremgenerator.spec"
 # ---------------------
 
 
@@ -30,6 +31,10 @@ if [ ! -f "$SNAP_DESKTOP_FILE" ]; then
     echo "Error: File not found: $SNAP_DESKTOP_FILE"
     exit 1
 fi
+if [ ! -f "$RPM_FILE" ]; then
+    echo "Error: File not found: $RPM_FILE"
+    exit 1
+fi
 
 # Read version from pubspec.yaml (extracts the line with 'version:' and gets the value after the space)
 APP_VERSION=$(grep 'version:' $PUBSPEC_FILE | cut -d ' ' -f 2)
@@ -41,6 +46,10 @@ fi
 
 echo "Version '$APP_VERSION' found in $PUBSPEC_FILE"
 
+# App details from pubspec.yaml for RPM spec
+APP_VERSION_SHORT=$(grep 'version:' pubspec.yaml | awk '{print $2}' | cut -d'+' -f1)
+APP_BUILD=$(grep 'version:' pubspec.yaml | awk '{print $2}' | cut -d'+' -f2)
+
 # Use sed to find and replace the Version line in debian.yaml and desktop file
 # This command looks for the line starting with '  Version:' and replaces the entire line.
 sed -i "s/^\(\s*Version:\s*\).*\$/\1$APP_VERSION/" "$DEBIAN_YAML_FILE"
@@ -48,5 +57,9 @@ sed -i "s/^\(\s*Version=\s*\).*\$/\1$APP_VERSION/" "$DEBIAN_DESKTOP_FILE"
 
 sed -i "s/^\(\s*version:\s*\).*\$/\1$APP_VERSION/" "$SNAP_YAML_FILE"
 sed -i "s/^\(\s*Version=\s*\).*\$/\1$APP_VERSION/" "$SNAP_DESKTOP_FILE"
+
+# Update version in RPM spec file
+sed -i "s/^\(\s*%define _version \s*\).*\$/\1$APP_VERSION_SHORT/" "$RPM_FILE"
+sed -i "s/^\(\s*%define _release \s*\).*\$/\1$APP_BUILD/" "$RPM_FILE"
 
 echo "Successfully updated version to $APP_VERSION in all relevant files."
