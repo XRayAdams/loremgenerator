@@ -1,5 +1,14 @@
 #!/bin/bash
 
+MACHINE_ARCH=$(uname -m)
+
+if [ "$MACHINE_ARCH" == "aarch64" ]; then
+    MACHINE_ARCH="arm64"
+    echo "Architecture was aarch64, updated to: $MACHINE_ARCH"
+else
+    echo "Architecture is: $MACHINE_ARCH (No change)"
+fi
+
 # Check if flutter_to_debian is installed
 if ! command -v flutter_to_debian &> /dev/null
 then
@@ -16,6 +25,8 @@ flutter build linux --release
 
 flutter_to_debian 
 mkdir -p dist
+#cp -r build/linux/$MACHINE_ARCH/release/debian/* dist/
+# flutter_to_debian does not replace x64 default arch with real arch from config file, so we use x64 as an output folder
 cp -r build/linux/x64/release/debian/* dist/
 
 echo "DEB package created in dist/"
@@ -42,7 +53,7 @@ sed "s/Icon=app.rayadams.$APP_NAME/Icon=$APP_NAME/" debian/gui/app.rayadams."$AP
 cp debian/gui/app.rayadams."$APP_NAME".png "$RPM_BUILD_ROOT/SOURCES/"
 
 # Package the application files into a tarball
-pushd build/linux/x64/release || exit
+pushd build/linux/$MACHINE_ARCH/release || exit
 tar -czvf "$RPM_BUILD_ROOT/SOURCES/$APP_NAME-$APP_VERSION.tar.gz" bundle
 popd || exit
 

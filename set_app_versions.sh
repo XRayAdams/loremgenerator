@@ -7,6 +7,14 @@ DEBIAN_DESKTOP_FILE="debian/gui/app.rayadams.loremgenerator.desktop"
 SNAP_YAML_FILE="snap/snapcraft.yaml"
 SNAP_DESKTOP_FILE="snap/gui/loremgenerator.desktop"
 RPM_FILE="loremgenerator.spec"
+MACHINE_ARCH=$(uname -m)
+
+if [ "$MACHINE_ARCH" == "aarch64" ]; then
+    MACHINE_ARCH="arm64"
+    echo "Architecture was aarch64, updated to: $MACHINE_ARCH"
+else
+    echo "Architecture is: $MACHINE_ARCH (No change)"
+fi
 # ---------------------
 
 
@@ -53,6 +61,9 @@ APP_BUILD=$(grep 'version:' pubspec.yaml | awk '{print $2}' | cut -d'+' -f2)
 # Use sed to find and replace the Version line in debian.yaml and desktop file
 # This command looks for the line starting with '  Version:' and replaces the entire line.
 sed -i "s/^\(\s*Version:\s*\).*\$/\1$APP_VERSION/" "$DEBIAN_YAML_FILE"
+sed -i "s/^\(\s*Architecture:\s*\).*\$/\1$MACHINE_ARCH/" "$DEBIAN_YAML_FILE"
+sed -i "s/^\(\s*arch:\s*\).*\$/\1$MACHINE_ARCH/" "$DEBIAN_YAML_FILE"
+
 sed -i "s/^\(\s*Version=\s*\).*\$/\1$APP_VERSION/" "$DEBIAN_DESKTOP_FILE"
 
 sed -i "s/^\(\s*version:\s*\).*\$/\1$APP_VERSION/" "$SNAP_YAML_FILE"

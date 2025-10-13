@@ -9,7 +9,7 @@ Release: %{_release}
 Summary: Lorem Ipsum Generator
 License: MIT
 Group: Applications/Utilities
-BuildArch: x86_64
+
 
 Source0: %{_name}-%{_version}.tar.gz
 Source1: app.rayadams.loremgenerator.desktop
