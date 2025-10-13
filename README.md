@@ -36,3 +36,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
    sudo dpkg -i [name-of-the-package].deb
    ```
 
+### As .rpm package
+
+1. Download the latest `.rpm` package from the project's GitHub releases page.
+2. Open a terminal and navigate to the directory where you downloaded the file.
+3. Install the package using the following command:
+
+   ```bash
+   sudo rpm -i [name-of-the-package].rpm
+   ```
