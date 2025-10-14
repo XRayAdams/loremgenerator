@@ -5,8 +5,8 @@ MACHINE_ARCH=$(uname -m)
 if [ "$MACHINE_ARCH" == "aarch64" ]; then
     MACHINE_ARCH="arm64"
     echo "Architecture was aarch64, updated to: $MACHINE_ARCH"
-else
-    echo "Architecture is: $MACHINE_ARCH (No change)"
+elif [ "$MACHINE_ARCH" == "x86_64" ]; then
+    MACHINE_ARCH="x64"
 fi
 
 # Check if flutter_to_debian is installed
