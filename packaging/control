@@ -1,0 +1,7 @@
+Package: loremgenerator
+Version: 1.0.1+7
+Architecture: amd64
+Priority: optional
+Depends:
+Maintainer: Konstantin Adamov <xrayadamo@gmail.com>
+Description: Lorem Ipsum Generator

@@ -1,22 +1,26 @@
 #!/bin/bash
 
+echo "___________________________________________________________"
+echo "Setting app version in all relevant files..."
+
+
 # --- Configuration ---
 PUBSPEC_FILE="pubspec.yaml"
-DEBIAN_YAML_FILE="debian/debian.yaml"
-DEBIAN_DESKTOP_FILE="debian/gui/app.rayadams.loremgenerator.desktop"
+DEBIAN_CONTROL_FILE="packaging/control"
+DEBIAN_DESKTOP_FILE="packaging/gui/app.rayadams.loremgenerator.desktop"
 SNAP_YAML_FILE="snap/snapcraft.yaml"
 SNAP_DESKTOP_FILE="snap/gui/loremgenerator.desktop"
-RPM_FILE="loremgenerator.spec"
+RPM_FILE="packaging/loremgenerator.spec"
 MACHINE_ARCH=$(uname -m)
-DEBIAN_YAML_ARCH="amd64"
+DEBIAN_CONTROL_FILE_ARCH="amd64"
 
 if [ "$MACHINE_ARCH" == "aarch64" ]; then
     MACHINE_ARCH="arm64"
-    DEBIAN_YAML_ARCH="arm64"
+    DEBIAN_CONTROL_FILE_ARCH="arm64"
     echo "Architecture was aarch64, updated to: $MACHINE_ARCH"
 elif [ "$MACHINE_ARCH" == "x86_64" ]; then
     MACHINE_ARCH="x64"
-    DEBIAN_YAML_ARCH="amd64"
+    DEBIAN_CONTROL_FILE_ARCH="amd64"
 fi
 # ---------------------
 
@@ -26,8 +30,8 @@ if [ ! -f "$PUBSPEC_FILE" ]; then
     echo "Error: File not found: $PUBSPEC_FILE"
     exit 1
 fi
-if [ ! -f "$DEBIAN_YAML_FILE" ]; then
-    echo "Error: File not found: $DEBIAN_YAML_FILE"
+if [ ! -f "$DEBIAN_CONTROL_FILE" ]; then
+    echo "Error: File not found: $DEBIAN_CONTROL_FILE"
     exit 1
 fi
 if [ ! -f "$DEBIAN_DESKTOP_FILE" ]; then
@@ -63,9 +67,8 @@ APP_BUILD=$(grep 'version:' pubspec.yaml | awk '{print $2}' | cut -d'+' -f2)
 
 # Use sed to find and replace the Version line in debian.yaml and desktop file
 # This command looks for the line starting with '  Version:' and replaces the entire line.
-sed -i "s/^\(\s*Version:\s*\).*\$/\1$APP_VERSION/" "$DEBIAN_YAML_FILE"
-sed -i "s/^\(\s*Architecture:\s*\).*\$/\1$DEBIAN_YAML_ARCH/" "$DEBIAN_YAML_FILE"
-sed -i "s/^\(\s*arch:\s*\).*\$/\1$MACHINE_ARCH/" "$DEBIAN_YAML_FILE"
+sed -i "s/^\(\s*Version:\s*\).*\$/\1$APP_VERSION/" "$DEBIAN_CONTROL_FILE"
+sed -i "s/^\(\s*Architecture:\s*\).*\$/\1$DEBIAN_CONTROL_FILE_ARCH/" "$DEBIAN_CONTROL_FILE"
 
 sed -i "s/^\(\s*Version=\s*\).*\$/\1$APP_VERSION/" "$DEBIAN_DESKTOP_FILE"
 
