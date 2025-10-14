@@ -73,3 +73,11 @@ find "$RPM_BUILD_ROOT/RPMS" -name "*.rpm" -exec mv {} dist/ \;
 rm -rf "$RPM_BUILD_ROOT"
 
 echo "RPM package created in dist/"
+echo "Preparing TAR archive"
+
+ARCHIVE_NAME="${APP_NAME}-${APP_VERSION}+${APP_BUILD}-${MACHINE_ARCH}.tar.gz"
+FULL_ARCHIVE_PATH="dist/${ARCHIVE_NAME}"
+SOURCE_DIR="build/linux/${MACHINE_ARCH}/release/bundle"
+
+tar -czvf "$FULL_ARCHIVE_PATH" -C "$SOURCE_DIR" .
+echo "TAR archive created in dist/"
