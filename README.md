@@ -22,6 +22,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <a href="screenshots/screenshot02.png"><img src="screenshots/screenshot02.png" alt="Screenshot 2" width="800"/></a>
 
 ## Installation sources
+
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/XRayAdams/loremgenerator/total)
+
 ### From Snap Store
 
 [![loremgenerator](https://snapcraft.io/loremgenerator/badge.svg)](https://snapcraft.io/loremgenerator)
