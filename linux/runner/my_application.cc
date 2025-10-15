@@ -44,11 +44,7 @@ static void my_application_activate(GApplication* application) {
   }
 #endif
   if (use_header_bar) {
-    GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
-    gtk_widget_show(GTK_WIDGET(header_bar));
-    gtk_header_bar_set_title(header_bar, "Lorem Ipsum Generator");
-    gtk_header_bar_set_show_close_button(header_bar, TRUE);
-    gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
+
   } else {
     gtk_window_set_title(window, "Lorem Ipsum Generator");
   }
@@ -60,25 +56,29 @@ static void my_application_activate(GApplication* application) {
 
   gtk_window_set_default_size(window, 720, 800);
 
-  g_autoptr(FlDartProject) project = fl_dart_project_new();
-  fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
+    g_autoptr(FlDartProject)
+    project = fl_dart_project_new();
+    fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
 
-  FlView* view = fl_view_new(project);
-  GdkRGBA background_color;
-  // Background defaults to black, override it here if necessary, e.g. #00000000 for transparent.
-  gdk_rgba_parse(&background_color, "#00000000");
-  fl_view_set_background_color(view, &background_color);
-  gtk_widget_show(GTK_WIDGET(view));
-  gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
+    FlView *view = fl_view_new(project);
+    gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
 
-  // Show the window when Flutter renders.
-  // Requires the view to be realized so we can start rendering.
-  g_signal_connect_swapped(view, "first-frame", G_CALLBACK(first_frame_cb), self);
-  gtk_widget_realize(GTK_WIDGET(view));
+    fl_register_plugins(FL_PLUGIN_REGISTRY(view));
 
-  fl_register_plugins(FL_PLUGIN_REGISTRY(view));
+    GdkRGBA background_color;
+    // Background defaults to black, override it here if necessary, e.g. #00000000 for transparent.
+    gdk_rgba_parse(&background_color, "#00000000");
+    fl_view_set_background_color(view, &background_color);
+    gtk_widget_show(GTK_WIDGET(view));
 
-  gtk_widget_grab_focus(GTK_WIDGET(view));
+    // Show the window when Flutter renders.
+    // Requires the view to be realized so we can start rendering.
+    g_signal_connect_swapped(view, "first-frame", G_CALLBACK(first_frame_cb), self);
+    gtk_widget_realize(GTK_WIDGET(window));
+
+    gtk_widget_realize(GTK_WIDGET(view));
+
+    gtk_widget_grab_focus(GTK_WIDGET(view));
 }
 
 // Implements GApplication::local_command_line.

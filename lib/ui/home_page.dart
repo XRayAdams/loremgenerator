@@ -56,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: YaruWindowTitleBar(
+        title: Text(widget.title),
         actions: [
           YaruOptionButton(
             child: const Icon(YaruIcons.menu),
