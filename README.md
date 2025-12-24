@@ -2,6 +2,8 @@
 
 A simple and configurable Lorem Ipsum generator built with Flutter.
 
+This project is closed and was moved here [https://github.com/XRayAdams/loremgenerator-rs](https://github.com/XRayAdams/loremgenerator-rs). New project was built using Rust and GTK+ v4
+
 ## Features
 
 *   **Generate Lorem Ipsum Text:** Create placeholder text for your designs and mockups.
